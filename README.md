@@ -32,7 +32,8 @@ npm run dev
 pnpm run dev
 
 # yarn
-yarn dev
+cp .env.example .env.development
+yarn dev --dotenv .env.development
 
 # bun
 bun run dev
