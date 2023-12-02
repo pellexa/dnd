@@ -1,5 +1,6 @@
-export default defineEventHandler(async () => {
+export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig();
+  const query = getQuery(event);
 
   const response = await $fetch('/character', {
     method: 'GET',
@@ -7,6 +8,7 @@ export default defineEventHandler(async () => {
     headers: {
       'Content-Type': 'application/json',
     },
+    query,
   }).catch((error) => {
     console.log('(character) Error: ', error);
     return error;

@@ -17,6 +17,15 @@ h3::first-letter {
   text-transform: uppercase;
 }
 
+ul {
+  list-style: none;
+  margin-block-start: 0px;
+  margin-block-end: 0px;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  padding-inline-start: 0px;
+}
+
 .form__row {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(5em, 1fr));

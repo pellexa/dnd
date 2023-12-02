@@ -28,3 +28,8 @@ export type CharacterList = {
   };
   results: Character[];
 };
+
+export type CharacterFilter = {
+  name: string;
+  status: string;
+};

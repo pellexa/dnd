@@ -1,13 +1,15 @@
 import axios from 'axios';
-import type { CharacterList } from '~/types/character';
+import type { CharacterList, CharacterFilter } from '~/types/character';
 
 export const useCharacterStore = defineStore('character', () => {
   const data = ref<CharacterList>();
   const errorResponse = ref();
 
-  async function getList() {
+  async function getList(params?: Partial<CharacterFilter>) {
     try {
-      const response = await axios.get<CharacterList>('/api/character');
+      const response = await axios.get<CharacterList>('/api/character', {
+        params,
+      });
       data.value = response.data;
     } catch (error) {
       errorResponse.value = error;
