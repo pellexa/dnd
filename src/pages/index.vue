@@ -42,6 +42,17 @@ const filter = reactive<CharacterFilter>({
   status: '',
 });
 
+const debounceParamsWatch = debounce(async (newValue, oldValue) => {
+  characterStore.infiniteData = [];
+
+  await navigateTo({
+    query: newValue,
+    replace: true,
+  });
+
+  await characterStore.getList(newValue);
+}, 300);
+
 const route = useRoute();
 const characterStore = useCharacterStore();
 
@@ -58,16 +69,7 @@ const params = computed(() => {
   return currentFilter;
 });
 
-watch(params, async (newValue, oldValue) => {
-  characterStore.infiniteData = [];
-
-  await navigateTo({
-    query: newValue,
-    replace: true,
-  });
-
-  await characterStore.getList(newValue);
-});
+watch(params, debounceParamsWatch);
 
 const fillFilter = () => {
   const query = route.query;
