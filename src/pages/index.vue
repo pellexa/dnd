@@ -89,6 +89,7 @@ onMounted(async () => {
   }
 
   infiniteScroll();
+  document.addEventListener('scroll', infiniteScroll);
 });
 
 onBeforeUnmount(() => {
