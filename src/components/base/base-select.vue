@@ -5,7 +5,7 @@
     </label>
 
     <div class="form__row-field-box">
-      <select name="name" :id="id" @change="handlerChange">
+      <select name="name" :id="id" @change="handlerChange" :value="modelValue">
         <option value="">-Выбрать-</option>
         <option v-for="option in options" :value="option.value">{{ option.text }}</option>
       </select>
