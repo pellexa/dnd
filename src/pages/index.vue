@@ -14,10 +14,10 @@
     />
 
     <ul class="character__list">
-      <li v-for="character in results" class="character__card">
+      <li v-for="character in results" class="character__card" :key="character.id">
         <img class="character__image" :src="character.image" />
         <div class="character__name">{{ character.name }} ({{ character.species }})</div>
-        <ul v-for="episode in episodes(character.episode)">
+        <ul v-for="episode in episodes(character.episode)" :key="episode">
           <li class="character__episode">эпизод {{ episode }}</li>
         </ul>
       </li>
@@ -104,8 +104,8 @@ const episodes = computed(() => {
   return (arr: Character['episode']) => {
     const result = arr.slice(0, 5).map((item) => {
       // Cut id from url
-      const id = item.match(/[0-9]+$/g);
-      return id ? id[0] : null;
+      const id = item.match(/[0-9]+$/g)!;
+      return id[0];
     });
 
     return result;
