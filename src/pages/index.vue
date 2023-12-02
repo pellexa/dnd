@@ -59,6 +59,8 @@ const params = computed(() => {
 });
 
 watch(params, async (newValue, oldValue) => {
+  characterStore.infiniteData = [];
+
   await navigateTo({
     query: newValue,
     replace: true,
@@ -67,22 +69,36 @@ watch(params, async (newValue, oldValue) => {
   await characterStore.getList(newValue);
 });
 
-onMounted(async () => {
-  const params = route.query;
+const fillFilter = () => {
+  const query = route.query;
 
   for (const keyFilter in filter) {
-    for (const key in params) {
+    for (const key in query) {
       if (keyFilter === key) {
-        filter[keyFilter as keyof CharacterFilter] = params[key] as string;
+        filter[keyFilter as keyof CharacterFilter] = query[key] as string;
       }
     }
   }
+};
 
-  await characterStore.getList(filter);
+onMounted(async () => {
+  fillFilter();
+
+  if (Object.keys(params.value).length < 1) {
+    await characterStore.getList(params.value);
+  }
+
+  infiniteScroll();
+});
+
+onBeforeUnmount(() => {
+  document.removeEventListener('scroll', infiniteScroll);
 });
 
 const data = computed(() => characterStore.data);
-const results = computed(() => data.value?.results);
+const info = computed(() => data.value?.info);
+const results = computed(() => characterStore.infiniteData);
+const nextPage = ref<string | null>(null);
 
 const episodes = computed(() => {
   return (arr: Character['episode']) => {
@@ -95,6 +111,33 @@ const episodes = computed(() => {
     return result;
   };
 });
+
+const infiniteScroll = () => {
+  const clientHeight = document.documentElement.clientHeight;
+  const scrollHeight = document.documentElement.scrollHeight;
+  const scrollTop = document.documentElement.scrollTop;
+  const endPage = clientHeight + scrollTop + clientHeight * 0.3 >= scrollHeight && scrollTop;
+
+  if (!endPage) {
+    return;
+  }
+
+  if (!info.value?.next) {
+    return;
+  }
+
+  nextPage.value = info.value.next;
+};
+
+watch(nextPage, async (newValue, oldValue) => {
+  if (!newValue) {
+    return;
+  }
+
+  const paneNumber = newValue.replace(/^.*page=([0-9]+).*$/g, '$1');
+
+  await characterStore.getList({ page: paneNumber, ...params.value });
+});
 </script>
 
 <style>
@@ -105,10 +148,12 @@ const episodes = computed(() => {
 .character__list {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 .character__card {
   margin: 1em;
+  max-width: 300px;
 }
 
 .character__image {

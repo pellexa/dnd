@@ -1,8 +1,9 @@
 import axios from 'axios';
-import type { CharacterList, CharacterFilter } from '~/types/character';
+import type { CharacterList, CharacterFilter, Character } from '~/types/character';
 
 export const useCharacterStore = defineStore('character', () => {
   const data = ref<CharacterList>();
+  const infiniteData = ref<Character[]>([]);
   const errorResponse = ref();
 
   async function getList(params?: Partial<CharacterFilter>) {
@@ -11,6 +12,7 @@ export const useCharacterStore = defineStore('character', () => {
         params,
       });
       data.value = response.data;
+      infiniteData.value = infiniteData.value.concat(response.data.results);
     } catch (error) {
       errorResponse.value = error;
     }
@@ -18,6 +20,7 @@ export const useCharacterStore = defineStore('character', () => {
 
   return {
     data,
+    infiniteData,
     errorResponse,
     getList,
   };

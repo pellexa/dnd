@@ -32,4 +32,5 @@ export type CharacterList = {
 export type CharacterFilter = {
   name: string;
   status: string;
+  page?: string;
 };
