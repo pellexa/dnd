@@ -3,7 +3,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   srcDir: 'src/',
   runtimeConfig: {
-    apiUrl: process.env.API_URL,
+    apiUrl: 'https://rickandmortyapi.com/api',
   },
   modules: ['@pinia/nuxt'],
 });
