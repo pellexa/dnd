@@ -17,6 +17,12 @@ h3::first-letter {
   text-transform: uppercase;
 }
 
+a {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
 ul {
   list-style: none;
   margin-block-start: 0px;
