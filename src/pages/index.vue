@@ -15,7 +15,12 @@
 
     <ul class="character__list">
       <template v-for="character in results" :key="character.id">
-        <CharacterDetailed :character="character" :classes="['character__list-card']">
+        <CharacterDetailed
+          :character="character"
+          :isLink="true"
+          :id="character.id.toString()"
+          :classes="['character__list-card']"
+        >
           <ul v-for="episode in episodes(character.episode)" :key="episode">
             <li class="character__episode">
               <NuxtLink :to="`/episode/${episode}`"> эпизод {{ episode }} </NuxtLink>

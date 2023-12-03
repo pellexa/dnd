@@ -1,6 +1,13 @@
 <template>
   <div :class="['character__card', classList]">
-    <img class="character__image" :src="character.image" />
+    <template v-if="isLink">
+      <NuxtLink :to="`/character/${id}`">
+        <img class="character__image" :src="character.image" />
+      </NuxtLink>
+    </template>
+    <template v-else>
+      <img class="character__image" :src="character.image" />
+    </template>
     <div class="character__name">{{ character.name }} ({{ character.species }})</div>
 
     <slot></slot>
@@ -10,7 +17,7 @@
 <script setup lang="ts">
 import type { Character } from '@/types/character';
 
-const props = defineProps<{ character: Character; classes?: string[] }>();
+const props = defineProps<{ character: Character; classes?: string[]; isLink?: boolean; id?: string }>();
 
 const propsClasses = ref(props.classes);
 const classList = computed(() => (propsClasses.value ? propsClasses.value : ''));
