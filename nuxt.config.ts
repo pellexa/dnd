@@ -6,4 +6,5 @@ export default defineNuxtConfig({
     apiUrl: 'https://rickandmortyapi.com/api',
   },
   modules: ['@pinia/nuxt'],
+  ssr: false,
 });
