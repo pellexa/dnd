@@ -74,6 +74,8 @@ jobs:
         run: md5sum nuxt.config.ts
       - name: Static HTML export with Nuxt
         run: ${{ steps.detect-package-manager.outputs.manager }} run generate
+      - name: Debug 2
+        run: find .output/public/
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
