@@ -14,13 +14,13 @@
     />
 
     <ul class="character__list">
-      <li v-for="character in results" class="character__card" :key="character.id">
-        <img class="character__image" :src="character.image" />
-        <div class="character__name">{{ character.name }} ({{ character.species }})</div>
-        <ul v-for="episode in episodes(character.episode)" :key="episode">
-          <li class="character__episode">эпизод {{ episode }}</li>
-        </ul>
-      </li>
+      <template v-for="character in results" :key="character.id">
+        <CharacterDetailed :character="character" :classes="['character__list-card']">
+          <ul v-for="episode in episodes(character.episode)" :key="episode">
+            <li class="character__episode">эпизод {{ episode }}</li>
+          </ul>
+        </CharacterDetailed>
+      </template>
     </ul>
   </template>
   <template v-else>
@@ -154,18 +154,9 @@ watch(nextPage, async (newValue, oldValue) => {
   justify-content: center;
 }
 
-.character__card {
+.character__list-card {
   margin: 1em;
   max-width: 300px;
-}
-
-.character__image {
-  width: 100%;
-  height: auto;
-}
-
-.character__name {
-  text-align: center;
 }
 
 .character__episode {

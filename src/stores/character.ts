@@ -4,6 +4,7 @@ import type { CharacterList, CharacterFilter, Character } from '~/types/characte
 export const useCharacterStore = defineStore('character', () => {
   const data = ref<CharacterList>();
   const infiniteData = ref<Character[]>([]);
+  const detailedData = ref<Character>();
   const errorResponse = ref();
 
   async function getList(params?: Partial<CharacterFilter>) {
@@ -18,10 +19,21 @@ export const useCharacterStore = defineStore('character', () => {
     }
   }
 
+  async function getDetailed(id: string) {
+    try {
+      const response = await axios.get<Character>(`/api/character/detailed/${id}`);
+      detailedData.value = response.data;
+    } catch (error) {
+      errorResponse.value = error;
+    }
+  }
+
   return {
     data,
     infiniteData,
+    detailedData,
     errorResponse,
     getList,
+    getDetailed,
   };
 });
