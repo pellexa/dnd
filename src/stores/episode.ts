@@ -7,9 +7,13 @@ export const useEpisodeStore = defineStore('episode', () => {
   const multipleCharacters = ref<Character[]>();
   const errorResponse = ref();
 
+  const config = useRuntimeConfig();
+
   async function getDetailed(id: string) {
     try {
-      const response = await axios.get<Episode>(`/api/episode/detailed/${id}`);
+      const response = await axios.get<Episode>(`/episode/${id}`, {
+        baseURL: config.public.apiUrl,
+      });
       detailedData.value = response.data;
     } catch (error) {
       errorResponse.value = error;
@@ -18,7 +22,9 @@ export const useEpisodeStore = defineStore('episode', () => {
 
   async function getMultipleCharacters(ids: number[]) {
     try {
-      const response = await axios.get<Character[]>(`/api/character/detailed/${ids}`);
+      const response = await axios.get<Character[]>(`/character/${ids}`, {
+        baseURL: config.public.apiUrl,
+      });
       multipleCharacters.value = response.data;
     } catch (error) {
       errorResponse.value = error;

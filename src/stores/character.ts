@@ -7,9 +7,12 @@ export const useCharacterStore = defineStore('character', () => {
   const detailedData = ref<Character>();
   const errorResponse = ref();
 
+  const config = useRuntimeConfig();
+
   async function getList(params?: Partial<CharacterFilter>) {
     try {
-      const response = await axios.get<CharacterList>('/api/character', {
+      const response = await axios.get<CharacterList>('/character', {
+        baseURL: config.public.apiUrl,
         params,
       });
       data.value = response.data;
@@ -21,7 +24,9 @@ export const useCharacterStore = defineStore('character', () => {
 
   async function getDetailed(id: string) {
     try {
-      const response = await axios.get<Character>(`/api/character/detailed/${id}`);
+      const response = await axios.get<Character>(`/character/${id}`, {
+        baseURL: config.public.apiUrl,
+      });
       detailedData.value = response.data;
     } catch (error) {
       errorResponse.value = error;
